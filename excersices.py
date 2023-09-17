@@ -1,8 +1,8 @@
 #1.Write a Python function to find the maximun of three numbers
 
-num1=3
-num2=6
-num3=9
+num1= int(input("Enter the first number: "))
+num2= int(input("Enter the second number: "))
+num3= int(input("Enter the third number: "))
 
 def max_of_three(num1, num2, num3):
     if num1>=num2 and num1>=num3:
