@@ -1,36 +1,52 @@
-board = [" " for _ in range(9)]
+import random
+
 def display_board(board):
-    print(f"{board[0]} | {board[1]} | {board[2]}")
-    print("--+---+--")
-    print(f"{board[3]} | {board[4]} | {board[5]}")
-    print("--+---+--")
-    print(f"{board[6]} | {board[7]} | {board[8]}")
+    for i in range(0, 9, 3):
+        print(" | ".join(board[i:i+3]))
+        if i < 6:
+            print("-" * 9)
+
 def get_player_input(board, player):
-    valid_input = False
-    while not valid_input:
+    while True:
         move = input(f"Player {player}, enter your move (1-9): ")
         if move.isdigit():
-            move = int(move) - 1  # Adjust for 0-based indexing
+            move = int(move) - 1
             if 0 <= move < 9 and board[move] == " ":
-                valid_input = True
-    return move
+                return move
+
+def get_computer_input(board, computer):
+    valid_moves = [i for i in range(9) if board[i] == " "]
+    
+    if computer == "X":
+        # Computer plays randomly
+        return random.choice(valid_moves)
+    else:
+        # Implement your computer's strategy here (e.g., simple random choice)
+        return random.choice(valid_moves)
+
 def check_win(board, player):
-    # Check rows, columns, and diagonals
     winning_combinations = [(0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6)]
-    for combo in winning_combinations:
-        if all(board[i] == player for i in combo):
-            return True
-    return False
+    return any(all(board[i] == player for i in combo) for combo in winning_combinations)
+
 def main():
+    board = [" " for _ in range(9)]
     player = "X"
+    computer = "O"
+    
     while True:
         display_board(board)
-        move = get_player_input(board, player)
+
+        if player == "X":
+            move = get_player_input(board, player)
+        else:
+            move = get_computer_input(board, computer)
+            print(f"Computer chose position {move + 1}")
+
         board[move] = player
 
         if check_win(board, player):
             display_board(board)
-            print(f"Player {player} wins!")
+            print(f"Player {player} wins!" if player == "X" else "Computer wins!")
             break
 
         if " " not in board:
@@ -38,7 +54,7 @@ def main():
             print("It's a tie!")
             break
 
-        player = "O" if player == "X" else "X"
+        player, computer = computer, player  # Swap player and computer
 
 if __name__ == "__main__":
     main()

@@ -21,9 +21,9 @@ while True: #Keeps the game going
             result = "You win"
     elif player_choice == "scissors":
         if computer_choice == "rock":
-            result = "Computer wins!"
+            result = "Computer wins"
         else:
-            result = "You win!"
+            result = "You win"
 
     #Print the results
     print(f"You picked: {player_choice}.")

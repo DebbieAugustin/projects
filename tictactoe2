@@ -1,0 +1,73 @@
+import random
+
+# Initialize the game board with 9 empty spaces
+board = [" " for _ in range(9)]
+
+# Function to display the tic-tac-toe board
+def display_board(board):
+    print(f"{board[0]} | {board[1]} | {board[2]}")
+    print("---------")
+    print(f"{board[3]} | {board[4]} | {board[5]}")
+    print("---------")
+    print(f"{board[6]} | {board[7]} | {board[8]}")
+
+# Function to get player's input
+def get_player_input(board, player):
+    valid_input = False
+    while not valid_input:
+        move = input(f"Player {player}, enter your move (1-9): ")
+        if move.isdigit():
+            move = int(move) - 1  # Adjust for 0-based indexing
+            if 0 <= move < 9 and board[move] == " ":
+                valid_input = True
+    return move
+
+# Function to get computer's input (randomly)
+def get_computer_input(board):
+    valid_moves = [i for i in range(9) if board[i] == " "]
+    return random.choice(valid_moves)
+
+# Function to check if a player has won
+def check_win(board, player):
+    # Define the winning combinations for rows, columns, and diagonals
+    winning_combinations = [(0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6)]
+    for combo in winning_combinations:
+        if all(board[i] == player for i in combo):
+            return True
+    return False
+
+# Main game loop
+def main():
+    player = "X"
+    while True:
+        display_board(board)  # Display the current state of the board
+
+        # Get the current player's move (player X or computer)
+        if player == "X":
+            move = get_player_input(board, player)
+        else:
+            move = get_computer_input(board)
+            print(f"Computer chose position {move + 1}")
+
+        board[move] = player  # Update the board with the player's move
+
+        # Check if the current player has won
+        if check_win(board, player):
+            display_board(board)
+            if player == "X":
+                print(f"Player {player} wins!")
+            else:
+                print("Computer wins!")
+            break
+
+        # Check for a tie (no empty spaces left on the board)
+        if " " not in board:
+            display_board(board)
+            print("It's a tie!")
+            break
+
+        player = "O" if player == "X" else "X"  # Switch to the other player's turn
+
+# Entry point for the game
+if __name__ == "__main__":
+    main()
